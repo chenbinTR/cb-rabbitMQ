@@ -1,0 +1,14 @@
+server:
+  port: 8081
+spring:
+  #给项目来个名字
+  application:
+    name: rabbitmq-provider
+  #配置rabbitMq 服务器
+  rabbitmq:
+    host: 192.168.10.21
+    port: 5672
+    username: guest
+    password:
+    #虚拟host 可以不设置,使用server默认host
+    virtual-host: /
