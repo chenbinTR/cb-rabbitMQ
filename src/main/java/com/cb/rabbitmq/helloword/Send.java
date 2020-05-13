@@ -4,6 +4,7 @@ package com.cb.rabbitmq.helloword;
 import com.cb.rabbitmq.ConnectionUtil;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.MessageProperties;
 
 public class Send {
 
@@ -21,7 +22,7 @@ public class Send {
         // 消息内容
         for(int i=0; i<1000; i++){
             String message = "Hello World "+i;
-            channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+            channel.basicPublish("", QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
             System.out.println(" [x] Sent '" + message + "'");
         }
         //关闭通道和连接
