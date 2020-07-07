@@ -1,18 +1,15 @@
-package com.cb.rabbitmq.routing;
+package com.cb.rabbitmq.topic;
 
 import com.cb.rabbitmq.ConnectionUtil;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
 
-/**
- * @author ChenOT
- * @date 2020-05-11
- * @see
- * @since
- */
-public class Recv2 {
-    private final static String QUEUE_NAME = "test_queue_direct_4";
+
+public class Recv1 {
+
+    private final static String QUEUE_NAME = "test_queue_topic_work_1";
+
     public static void main(String[] argv) throws Exception {
 
         // 获取到连接以及mq通道
@@ -23,9 +20,7 @@ public class Recv2 {
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
         // 绑定队列到交换机
-//        channel.queueBind(QUEUE_NAME, Send.EXCHANGE_NAME, "update");
-//        channel.queueBind(QUEUE_NAME, Send.EXCHANGE_NAME, "delete");
-        channel.queueBind(QUEUE_NAME, Send.EXCHANGE_NAME, "insert");
+        channel.queueBind(QUEUE_NAME, Send.EXCHANGE_NAME, "routekey.*");
 
         // 同一时刻服务器只会发一条消息给消费者
         channel.basicQos(1);
@@ -35,7 +30,7 @@ public class Recv2 {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 System.out.println(envelope.toString());
-                System.out.println("Recv2 消息内容:" + new String(body));
+                System.out.println("Recv1 消息内容:" + new String(body));
             }
         };
         // 监听队列

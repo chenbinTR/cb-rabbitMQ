@@ -1,4 +1,4 @@
-package com.cb.rabbitmq.helloword;
+package com.cb.rabbitmq.fanout;
 
 
 import com.cb.rabbitmq.ConnectionUtil;
@@ -6,21 +6,24 @@ import com.rabbitmq.client.*;
 
 import java.io.IOException;
 
-/**
- * 一个生产者，一个消费者
- */
-public class Recv {
 
-    private final static String QUEUE_NAME = "q_test_01";
+public class Recv1 {
+    /**
+     * 自定义queue名字
+     */
+    private final static String QUEUE_NAME = "fanout_consumer_1";
 
     public static void main(String[] argv) throws Exception {
-
         // 获取到连接以及mq通道
         Connection connection = ConnectionUtil.getConnection();
-        // 从连接中创建通道
         Channel channel = connection.createChannel();
         // 声明队列
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        // 绑定队列到交换机
+        channel.queueBind(QUEUE_NAME, Send.EXCHANGE_NAME, "");
+
+        // 同一时刻服务器只会发一条消息给消费者
+        channel.basicQos(1);
 
         // 定义队列的消费者
         Consumer consumer = new DefaultConsumer(channel) {
@@ -29,17 +32,10 @@ public class Recv {
                 System.out.println(consumerTag);
                 System.out.println(envelope.toString());
                 System.out.println(properties.toString());
-                System.out.println("消息内容:" + new String(body));
+                System.out.println("Recv1 消息内容:" + new String(body));
             }
         };
         // 监听队列
         channel.basicConsume(QUEUE_NAME, true, consumer);
-
-        // 获取消息
-//        while (true) {
-//            QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-//            String message = new String(delivery.getBody());
-//            System.out.println(" [x] Received '" + message + "'");
-//        }
     }
 }

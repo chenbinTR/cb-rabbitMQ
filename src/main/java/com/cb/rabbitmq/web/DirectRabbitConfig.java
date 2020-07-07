@@ -4,14 +4,9 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 
 /**
  * @Author : JCccc
@@ -28,29 +23,6 @@ public class DirectRabbitConfig {
 
     @Value("${spring.rabbitmq.username}")
     private String username;
-
-//    @Value("${spring.rabbitmq.password}")
-//    private String password;
-
-
-//    @Bean
-//    public ConnectionFactory connectionFactory() {
-//        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host,port);
-//        System.out.println(username);
-//        System.out.println(password);
-//        connectionFactory.setUsername(username);
-//        connectionFactory.setPassword(password);
-//        connectionFactory.setVirtualHost("/");
-//        return connectionFactory;
-//    }
-
-//    @Bean(name = "rabbitTemplate")
-//    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    //必须是prototype类型
-//    public RabbitTemplate rabbitTemplate() {
-//        RabbitTemplate template = new RabbitTemplate(connectionFactory());
-//        return template;
-//    }
 
     //队列 起名：TestDirectQueue
     @Bean
@@ -76,12 +48,4 @@ public class DirectRabbitConfig {
     Binding bindingDirect() {
         return BindingBuilder.bind(directQueue()).to(directExchange()).with("TestDirectRouting");
     }
- 
-//    @Bean
-//    DirectExchange lonelyDirectExchange() {
-//        return new DirectExchange("lonelyDirectExchange");
-//    }
- 
- 
- 
 }

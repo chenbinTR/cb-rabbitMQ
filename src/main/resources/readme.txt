@@ -1,0 +1,6 @@
+Exchange在定义的时候是有类型的，以决定到底是哪些Queue符合条件，可以接收消息
+
+fanout：所有bind到此exchange的queue都可以接收消息(纯广播的，所有消费者都能收到消息)
+direct：通过routingKey和exchange决定的那个唯一的queue可以接收消息
+topic：所有符合routingKey(此时可以是一个表达式)的routingKey所bind的queue可以接收消息
+headers：通过headers 来决定把消息发给哪些queue(这个很少用，一般情况下，我们用不到)
