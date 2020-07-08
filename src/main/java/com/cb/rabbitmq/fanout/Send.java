@@ -1,9 +1,7 @@
 package com.cb.rabbitmq.fanout;
 
 import com.cb.rabbitmq.ConnectionUtil;
-import com.rabbitmq.client.BuiltinExchangeType;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.*;
 
 /**
  * fanout类型 广播模式（也可以成为发布/订阅模式）
@@ -29,9 +27,13 @@ public class Send {
         Channel channel = connection.createChannel();
         // 声明exchange
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT, true);
+        // 消息参数
+        AMQP.BasicProperties.Builder properties = MessageProperties.PERSISTENT_TEXT_PLAIN.builder();
+        properties.contentType("application/json");
         // 消息内容
-        String message = "我是一个消息";
-        channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes());
+        String message = "{\"code\":\"entity\",\"data\":{\"apiKey\":\"general\",\"name\":\"poetry_author\",\"entity\":{\"value\":\"匡亚明\",\"score\":100,\"nature\":\"n_poetry_author\"},\"operate\":2}}";
+        // 发送消息
+        channel.basicPublish(EXCHANGE_NAME, "", properties.build(), message.getBytes());
         channel.close();
         connection.close();
     }
