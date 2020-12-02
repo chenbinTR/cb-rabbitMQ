@@ -22,7 +22,7 @@ public class Recv2 {
         channel.queueBind(QUEUE_NAME, Send.EXCHANGE_NAME, "*.*");
 
         // 同一时刻服务器只会发一条消息给消费者
-        channel.basicQos(1);
+//        channel.basicQos(1);
 
         // 定义队列的消费者
         Consumer consumer = new DefaultConsumer(channel) {

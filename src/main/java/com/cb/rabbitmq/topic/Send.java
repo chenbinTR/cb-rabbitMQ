@@ -6,19 +6,16 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 
 /**
- * 主题模式
+ * 发布/订阅模式
+ * 生产者不直接和消费者关联，而是通过交换机（exchange）
+ * exchange有四种类型：fanout、direct、topic、direct
  *
- * Direct Exchange
-
- 直连型交换机，根据消息携带的路由键将消息投递给对应队列。
-
- 大致流程，有一个队列绑定到一个直连交换机上，同时赋予一个路由键 routing key 。
- 然后当一个消息携带着路由值为X，这个消息通过生产者发送给交换机时，交换机就会根据这个路由值X去寻找绑定值也是X的队列。
-
- Topic Exchange
-
- 主题交换机，这个交换机其实跟直连交换机流程差不多，但是它的特点就是在它的路由键和绑定键之间是有规则的。
- 简单地介绍下规则：
+ * topic
+ * 生产者发消息给exchange，同时设定了消息的key（模糊key、规则key）
+ *
+ * 消费者创建队列，并与exchange绑定，同时制定队列接收特定key的消息
+ *
+ * 同样存在竞争关系
 
  *  (星号) 用来表示一个单词 (必须出现的)
  #  (井号) 用来表示任意数量（零个或多个）单词

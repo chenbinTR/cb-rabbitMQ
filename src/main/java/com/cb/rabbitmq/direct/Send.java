@@ -1,4 +1,4 @@
-package com.cb.rabbitmq.routing;
+package com.cb.rabbitmq.direct;
 
 import com.cb.rabbitmq.ConnectionUtil;
 import com.rabbitmq.client.BuiltinExchangeType;
@@ -6,11 +6,17 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 
 /**
- * 根据消息“类别”，由特定的消费者消费
- * @author ChenOT
- * @date 2020-05-11
- * @see
- * @since
+ * 发布/订阅模式
+ * 生产者不直接和消费者关联，而是通过交换机（exchange）
+ * exchange有四种类型：fanout、direct、topic、direct
+ *
+ * direct
+ * 生产者发消息给exchange，同时设定了消息的key
+ *
+ * 消费者创建队列，并与exchange绑定，同时制定队列接收特定key的消息
+ *
+ * 同样存在竞争关系
+ *
  */
 public class Send {
     public static final String EXCHANGE_NAME = "text_exchange_direct";
@@ -24,8 +30,8 @@ public class Send {
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         // 消息内容
-        String message = "删除商品";
-        channel.basicPublish(EXCHANGE_NAME, "delete", null, message.getBytes());
+        String message = "添加商品999999";
+        channel.basicPublish(EXCHANGE_NAME, "insert", null, message.getBytes());
         System.out.println(" [x] Sent '" + message + "'");
 
         channel.close();

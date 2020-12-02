@@ -11,7 +11,7 @@ public class Recv1 {
     /**
      * 自定义queue名字
      */
-    private final static String QUEUE_NAME = "fanout_consumer_1";
+    private final static String QUEUE_NAME = "test_fanout_consumer_1";
 
     public static void main(String[] argv) throws Exception {
         // 获取到连接以及mq通道
