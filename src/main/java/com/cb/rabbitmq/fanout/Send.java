@@ -35,7 +35,7 @@ public class Send {
         Connection connection = ConnectionUtil.getConnection();
         Channel channel = connection.createChannel();
         // 声明exchange
-        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT, true);
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
         // 消息内容
         String message = "fanout消息";
         // 发送消息
